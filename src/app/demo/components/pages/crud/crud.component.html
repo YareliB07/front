@@ -1,0 +1,167 @@
+<div class="grid">
+    <div class="col-12">
+        <div class="card px-6 py-6">
+            <p-toast></p-toast>
+            <p-toolbar styleClass="mb-4">
+                <ng-template pTemplate="left">
+                    <div class="my-2">
+                        <button pButton pRipple label="New" icon="pi pi-plus" class="p-button-success mr-2" (click)="openNew()"></button>
+                        <button pButton pRipple label="Delete" icon="pi pi-trash" class="p-button-danger" (click)="deleteSelectedProducts()" [disabled]="!selectedProducts || !selectedProducts.length"></button>
+                    </div>
+                </ng-template>
+            </p-toolbar>
+
+            <p-table #dt [value]="products" [columns]="cols" responsiveLayout="scroll" [rows]="10" [globalFilterFields]="['name','country.name','representative.name','status']" [paginator]="true" [rowsPerPageOptions]="[10,20]" [showCurrentPageReport]="true" [(selection)]="selectedProducts" selectionMode="multiple" [rowHover]="true" dataKey="id">
+                <ng-template pTemplate="caption">
+                    <div class="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
+                        <h2 class="m-0">Gestión de usuarios</h2>
+                        <span class="block mt-2 md:mt-0 p-input-icon-left">
+                            <i class="pi pi-search"></i>
+                            <input pInputText type="text" (input)="onGlobalFilter(dt, $event)" class="w-full sm:w-auto"/>
+                        </span>
+                    </div>
+                </ng-template>
+
+                <ng-template pTemplate="header">
+                    <tr>
+                        <th style="width: 3rem">
+                            <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                        </th>
+                        <th>ID</th>   
+                        <th>Nombre</th>
+                        <th>Edad</th>
+                        <th>Ciudad</th>
+                        <th>Calle</th>
+                        <th>Colonia</th>
+                        <th>Código postal</th>
+                        <th></th>
+                    </tr>
+                </ng-template>
+
+                <ng-template pTemplate="body" let-product>
+                    <tr>
+                        <td>
+                            <p-tableCheckbox [value]="product"></p-tableCheckbox>
+                        </td>
+                        <td style="width:14%; min-width:10rem;"><span class="p-column-title">ID</span>
+                            {{product.code || product.id}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Nombre</span>
+                            {{product.nombre + "" + product.apellidoPaterno + "" + product.apellidoMaterno}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;"><span class="p-column-title">Edad</span>
+                            {{product.fechaNacimiento}}
+                        </td>
+                        <td style="width:14%; min-width:8rem;">
+                            <span class="p-column-title">Ciudad</span>
+                            {{product.ciudad}}
+                        </td>
+                        <td style="width:14%; min-width: 10rem;"><span class="p-column-title">Calle</span>
+                            {{product.calle}}
+                        </td>
+                        <td style="width:14%; min-width:10rem;">
+                            <span class="p-column-title">Colonia</span>
+                            {{product.colonia}}
+                        </td>
+                        <td style="width:14%; min-width: 10rem;"><span class="p-column-title">Código postal</span>
+                            {{product.codigoPostal}}
+                        </td>
+                        <td>
+                            <div class="flex">
+                                <button pButton pRipple icon="pi pi-pencil" class="p-button-rounded p-button-success mr-2" (click)="editProduct(product)"></button>
+                                <button pButton pRipple icon="pi pi-trash" class="p-button-rounded p-button-warning" (click)="deleteProduct(product)"></button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-template>
+            </p-table>
+        </div>
+
+
+        <p-dialog [(visible)]="productDialog" [style]="{width: '450px'}" header="Datos del usuario" [modal]="true" class="p-fluid">
+            <ng-template pTemplate="content">
+                <img [src]="'assets/demo/images/product/' + product.image" [alt]="product.image" width="150" class="mt-0 mx-auto mb-5 block shadow-2" *ngIf="product.image">
+                <div class="field">
+                    <label for="nombre">Nombre</label>
+                    <input type="text" pInputText id="nombre" [(ngModel)]="product.nombre" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.name}"/>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !product.name">El nombre es requerido.</small>
+                </div>
+
+                <div class="formgrid grid">
+                    <div class="field col">
+                        <label for="apellidoPaterno">Apellido Paterno</label>
+                        <input type="text" pInputText id="apellidoPaterno" [(ngModel)]="product.apellidoPaterno" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.name}"/>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !product.name">El apellido es requerido.</small>
+                    </div>
+                    <div class="field col">
+                        <label for="apellidoMaterno">Apellido Materno</label>
+                        <input type="text" pInputText id="apellidoMaterno" [(ngModel)]="product.apellidoMaterno" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.name}"/>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !product.name">El apellido es requerido.</small>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label for="fechaNacimiento">Fecha de nacimiento</label>
+                    <input type="text" pInputText id="fechaNacimiento" [(ngModel)]="product.fechaNacimiento" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.name}"/>
+                    <small class="ng-dirty ng-invalid" *ngIf="submitted && !product.name">El fecha es requerida.</small>
+                </div>
+
+                <div class="formgrid grid">
+                    <div class="field col">
+                        <label for="ciudad">Ciudad</label>
+                        <input type="text" pInputText id="ciudad" [(ngModel)]="product.ciudad" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.name}"/>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !product.name">La ciudad es requerida.</small>
+                    </div>
+                    <div class="field col">
+                        <label for="calle">Calle</label>
+                        <input type="text" pInputText id="calle" [(ngModel)]="product.calle" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.name}"/>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !product.name">La calle es requerido.</small>
+                    </div>
+                </div>
+
+                <div class="formgrid grid">
+                    <div class="field col">
+                        <label for="colonia">Colonia</label>
+                        <input type="text" pInputText id="colonia" [(ngModel)]="product.colonia" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.name}"/>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !product.name">La colonia es requerida.</small>
+                    </div>
+                    <div class="field col">
+                        <label for="codigoPostal">Código Postal</label>
+                        <input type="text" pInputText id="codigoPostal" [(ngModel)]="product.codigoPostal" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.name}"/>
+                        <small class="ng-dirty ng-invalid" *ngIf="submitted && !product.name">El código postal es requerido.</small>
+                    </div>
+                </div>
+
+            </ng-template>
+
+            <ng-template pTemplate="footer">
+                <button pButton pRipple label="Cancelar" icon="pi pi-times" class="p-button-text" (click)="hideDialog()"></button>
+                <button pButton pRipple label="Guardar" icon="pi pi-check" class="p-button-text" (click)="saveProduct()"></button>
+            </ng-template>
+        </p-dialog>
+
+
+        <p-dialog [(visible)]="deleteProductDialog" header="Confirmar" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span *ngIf="product">¿Estás seguro de borrar <b>{{product.nombre}}</b>?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteProductDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="confirmDelete()"></button>
+            </ng-template>
+        </p-dialog>
+
+        <p-dialog [(visible)]="deleteProductsDialog" header="Confirm" [modal]="true" [style]="{width:'450px'}">
+            <div class="flex align-items-center justify-content-center">
+                <i class="pi pi-exclamation-triangle mr-3" style="font-size: 2rem"></i>
+                <span>¿¿Estás seguro de borrar los usuarios seleccionados?</span>
+            </div>
+            <ng-template pTemplate="footer">
+                <button pButton pRipple icon="pi pi-times" class="p-button-text" label="No" (click)="deleteProductsDialog = false"></button>
+                <button pButton pRipple icon="pi pi-check" class="p-button-text" label="Si" (click)="confirmDeleteSelected()"></button>
+            </ng-template>
+        </p-dialog>
+    </div>
+</div>
