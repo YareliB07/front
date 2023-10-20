@@ -97,21 +97,23 @@
                     <small class="ng-dirty ng-invalid" *ngIf="submitted && !product.name">El nombre es requerido.</small>
                 </div>
 
-                <div class="formgrid grid">
-                    <div class="field col">
+                    <div class="field ">
                         <label for="fechaInicio">Fecha Inicio</label>
-                        <input type="text" pInputText id="fechaInicio" [(ngModel)]="product.fechaInicio" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.name}"/>
+                        <input type="text" pInputText id="fechaInicio" [(ngModel)]="product.fechaInicio" required autofocus
+                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.name}" />
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !product.name">La fecha de inicio es requerida.</small>
                     </div>
-                    <div class="field col">
+                    
+                    <div class="field ">
                         <label for="fechaFin">Fecha Fin</label>
-                        <input type="text" pInputText id="fechaFin" [(ngModel)]="product.fechaFin" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.name}"/>
+                        <input type="text" pInputText id="fechaFin" [(ngModel)]="product.fechaFin" required autofocus
+                            [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.name}" />
                         <small class="ng-dirty ng-invalid" *ngIf="submitted && !product.name">La fecha de fin es requerida.</small>
                     </div>
-                    <div class="field col">
-                        <label for="fechaDevolucion">Fecha Devolución</label>
-                        <input type="text" pInputText id="fechaDevolucion" [(ngModel)]="product.fechaDevolucion" required autofocus [ngClass]="{'ng-invalid ng-dirty' : submitted && !product.name}"/>
-                    </div>
+
+                <div class="field">
+                    <label for="fechaDevolucion">Fecha Devolución</label> 
+                    <p-calendar [(ngModel)]="product.fechaDevolucion" [showIcon]="true"></p-calendar>
                 </div>
 
                 <div class="field">

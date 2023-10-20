@@ -16,6 +16,7 @@ import { RippleModule } from 'primeng/ripple';
 import { TableModule } from 'primeng/table';
 import { ToastModule } from 'primeng/toast';
 import { ToolbarModule } from 'primeng/toolbar';
+import { CalendarModule } from 'primeng/calendar';
 
 @NgModule({
 	imports: [
@@ -35,7 +36,8 @@ import { ToolbarModule } from 'primeng/toolbar';
         DropdownModule,
         RadioButtonModule,
         InputNumberModule,
-        DialogModule
+        DialogModule,
+        CalendarModule
 	],
 	declarations: [ChartsDemoComponent]
 })
